@@ -1,0 +1,914 @@
+@use "colors" as *;
+
+// All styles in this file target only the Shop and Archive Product Pages
+body.archive.woocommerce,
+body.post-type-archive-product,
+body.tax-product_cat,
+body.tax-product_tag,
+body.search.woocommerce,
+body.search.woocommerce-page,
+body.woocommerce-search-page {
+
+    .site {
+        overflow: visible;
+    }
+
+    // Main layout cleanup
+    #primary.content-area {
+        float: none !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding-top: 20px;
+    }
+
+    #secondary.widget-area {
+        display: none !important; // Replaced by our custom Refine Shelf sidebar
+    }
+
+    // Two-column layout: Sidebar (Refine Shelf) + Products Content
+    .agro-shop-layout {
+        display: grid;
+        grid-template-columns: 270px minmax(0, 1fr);
+        gap: 36px;
+        align-items: start;
+        margin-bottom: 50px;
+
+        &.full-width,
+        &.agro-no-products-layout {
+            display: block !important;
+            grid-template-columns: 1fr !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-bottom: 40px;
+
+            .agro-shop-main-content {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+        }
+    }
+
+    // ==========================================
+    // 1. LEFT COLUMN: REFINE SHELF (SIDEBAR)
+    // ==========================================
+    @media (min-width: 1025px) {
+        .agro-sidebar-wrap {
+            position: sticky;
+            top: 20px;
+        }
+
+        &.admin-bar {
+            .agro-sidebar-wrap {
+                position: sticky;
+                top: 52px;
+            }
+        }
+    }
+
+    .agro-shop-sidebar {
+        background-color: #ffffff;
+        border-radius: 12px;
+        padding: 0;
+
+        .refine-shelf-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #f0f0f0;
+
+            .refine-title {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 16px;
+                font-weight: 800;
+                color: var(--text-dark);
+                letter-spacing: -0.2px;
+
+                svg {
+                    width: 18px;
+                    height: 18px;
+                    stroke: var(--primary-color);
+                }
+            }
+
+            .reset-all-btn {
+                font-size: 12px;
+                font-weight: 700;
+                color: var(--primary-color);
+                background: none;
+                border: none;
+                padding: 0;
+                cursor: pointer;
+                text-decoration: none;
+                transition: opacity 0.15s ease;
+
+                &:hover {
+                    opacity: 0.8;
+                }
+            }
+        }
+
+        .filter-group {
+            margin-bottom: 24px;
+
+            .filter-heading {
+                font-size: 11px;
+                font-weight: 800;
+                color: #6b7280;
+                text-transform: uppercase;
+                letter-spacing: 0.8px;
+                margin-bottom: 14px;
+            }
+        }
+
+        // Category Vertical Tree
+        .filter-category-tree {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+
+            li {
+                margin-bottom: 6px;
+
+                a {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 8px 12px;
+                    border-radius: 6px;
+                    text-decoration: none;
+                    color: #4b5563;
+                    font-size: 14px;
+                    font-weight: 500;
+                    transition: all 0.15s ease;
+
+                    .cat-name {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    }
+
+                    .cat-count {
+                        font-size: 12px;
+                        color: #9ca3af;
+                        font-weight: 600;
+                    }
+
+                    &:hover {
+                        background-color: #f9fafb;
+                        color: var(--text-dark);
+                    }
+                }
+
+                &.is-active a {
+                    background-color: #fee2e2;
+                    color: var(--primary-color);
+                    font-weight: 700;
+
+                    .cat-name::before {
+                        content: "";
+                        width: 7px;
+                        height: 7px;
+                        border-radius: 50%;
+                        background-color: var(--primary-color);
+                        display: inline-block;
+                    }
+
+                    .cat-count {
+                        color: var(--primary-color);
+                        font-weight: 800;
+                    }
+                }
+            }
+        }
+
+        // Custom Checkbox List (Price & Dietary)
+        .filter-checkbox-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+
+            li {
+                margin-bottom: 10px;
+
+                label {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    font-size: 13.5px;
+                    color: #374151;
+                    cursor: pointer;
+                    user-select: none;
+                    font-weight: 500;
+
+                    .checkbox-label-text {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                    }
+
+                    input[type="checkbox"] {
+                        appearance: none;
+                        width: 17px;
+                        height: 17px;
+                        border: 1.5px solid #d1d5db;
+                        border-radius: 4px;
+                        outline: none;
+                        cursor: pointer;
+                        margin: 0;
+                        position: relative;
+                        background-color: #ffffff;
+                        transition: all 0.15s ease;
+
+                        &:checked {
+                            background-color: var(--primary-color);
+                            border-color: var(--primary-color);
+
+                            &::after {
+                                content: "";
+                                position: absolute;
+                                left: 5px;
+                                top: 2px;
+                                width: 4px;
+                                height: 8px;
+                                border: solid #ffffff;
+                                border-width: 0 2px 2px 0;
+                                transform: rotate(45deg);
+                            }
+                        }
+
+                        &:hover {
+                            border-color: var(--primary-color);
+                        }
+                    }
+
+                    .item-count {
+                        font-size: 12px;
+                        color: #9ca3af;
+                        font-weight: 600;
+                    }
+
+                    &:hover {
+                        color: var(--text-dark);
+                    }
+                }
+            }
+        }
+
+        // Pack Size Pills Filter
+        .pack-size-filter-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+
+            .pack-pill-btn {
+                background-color: #f3f4f6;
+                color: #374151;
+                border: 1px solid #e5e7eb;
+                border-radius: 6px;
+                padding: 5px 12px;
+                font-size: 12px;
+                font-weight: 700;
+                cursor: pointer;
+                user-select: none;
+                transition: all 0.15s ease;
+
+                &:hover {
+                    border-color: #cbd5e1;
+                    background-color: #e5e7eb;
+                }
+
+                &.is-active {
+                    background-color: var(--primary-color);
+                    color: #ffffff;
+                    border-color: var(--primary-color);
+                    box-shadow: 0 2px 6px rgba(200, 35, 51, 0.25);
+                }
+            }
+        }
+
+        // Agro Aura Promise Card
+        .agro-promise-card {
+            background-color: #f2f8f5;
+            border: 1px solid #dcf0e7;
+            border-radius: 10px;
+            padding: 16px;
+            margin-top: 30px;
+
+            .promise-header {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 8px;
+
+                svg {
+                    width: 17px;
+                    height: 17px;
+                    stroke: #15803d;
+                    fill: none;
+                    stroke-width: 2;
+                }
+
+                span {
+                    font-size: 11.5px;
+                    font-weight: 800;
+                    color: #15803d;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+            }
+
+            p {
+                font-size: 12px;
+                line-height: 1.5;
+                color: #4b5563;
+                margin: 0;
+            }
+        }
+    }
+
+    // ==========================================
+    // 2. RIGHT COLUMN: MAIN SHOP AREA
+    // ==========================================
+    .agro-shop-main-content {
+        min-width: 0;
+
+        ul.products {
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 20px !important;
+
+            @media (max-width: 1280px) and (min-width: 1025px) {
+                grid-template-columns: repeat(3, 1fr) !important;
+            }
+        }
+
+        // Top Control Bar
+        .agro-shop-top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 14px;
+
+            .shop-result-count {
+                font-size: 13.5px;
+                color: #6b7280;
+                font-weight: 500;
+                margin: 0;
+
+                strong {
+                    color: var(--text-dark);
+                    font-weight: 700;
+                }
+            }
+
+            .agro-top-right-controls {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                flex-wrap: wrap;
+            }
+
+            // Active Filter Chips
+            .agro-active-filters {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                flex-wrap: wrap;
+
+                .filter-chip {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    background-color: #f3f4f6;
+                    border: 1px solid #e5e7eb;
+                    border-radius: 6px;
+                    padding: 4px 10px;
+                    font-size: 12px;
+                    font-weight: 600;
+                    color: #374151;
+
+                    .remove-chip-btn {
+                        background: none;
+                        border: none;
+                        padding: 0;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: #6b7280;
+                        font-size: 14px;
+                        line-height: 1;
+
+                        &:hover {
+                            color: var(--primary-color);
+                        }
+                    }
+                }
+            }
+
+            // Sort Dropdown
+            .agro-catalog-ordering {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin: 0;
+
+                .sort-label {
+                    font-size: 11.5px;
+                    font-weight: 800;
+                    color: #6b7280;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+
+                form.woocommerce-ordering {
+                    margin: 0 !important;
+                    float: none !important;
+
+                    select.orderby {
+                        border: 1px solid #e5e7eb;
+                        border-radius: 6px;
+                        background-color: #ffffff;
+                        padding: 6px 30px 6px 12px;
+                        font-size: 13px;
+                        font-weight: 600;
+                        color: var(--text-dark);
+                        cursor: pointer;
+                        appearance: none;
+                        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234b5563' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+                        background-repeat: no-repeat;
+                        background-position: right 10px center;
+                        outline: none;
+
+                        &:hover,
+                        &:focus {
+                            border-color: #cbd5e1;
+                        }
+                    }
+                }
+            }
+        }
+
+        // 3. Product grid is globally provided by _common-product.scss
+
+
+        // Hide pagination wrap during infinite scroll
+        .agro-pagination-wrap,
+        #agro-shop-pagination {
+            display: none !important;
+        }
+
+        // Storefront bottom sorting bar cleanup
+        .storefront-sorting {
+            display: none !important;
+        }
+
+        // Infinite Scroll Status Bar & Indicator
+        .agro-infinite-scroll-status {
+            width: 100%;
+            padding: 36px 0 48px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            clear: both;
+
+            .agro-infinite-loader {
+                display: inline-flex;
+                align-items: center;
+                gap: 12px;
+                background-color: #ffffff;
+                padding: 10px 24px;
+                border-radius: 50px;
+                box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+                border: 1px solid #e5e7eb;
+                font-size: 13.5px;
+                font-weight: 600;
+                color: var(--text-dark);
+                animation: agroInfinitePulse 1.8s ease-in-out infinite;
+
+                .agro-infinite-spinner {
+                    width: 20px;
+                    height: 20px;
+                    border: 2.5px solid #f3f4f6;
+                    border-top-color: var(--primary-color);
+                    border-radius: 50%;
+                    animation: agroInfiniteSpin 0.75s linear infinite;
+                    flex-shrink: 0;
+                }
+
+                .agro-infinite-text {
+                    letter-spacing: -0.1px;
+                }
+            }
+
+            .agro-infinite-end {
+                display: inline-flex;
+                align-items: center;
+                gap: 12px;
+                font-size: 13px;
+                font-weight: 600;
+                color: #9ca3af;
+                padding: 8px 20px;
+                border-radius: 20px;
+                background-color: #f9fafb;
+
+                &::before,
+                &::after {
+                    content: '';
+                    display: inline-block;
+                    width: 24px;
+                    height: 1px;
+                    background-color: #e5e7eb;
+                }
+            }
+        }
+
+        @keyframes agroInfiniteSpin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes agroInfinitePulse {
+            0%, 100% {
+                box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+            }
+            50% {
+                box-shadow: 0 4px 22px rgba(160, 16, 38, 0.12);
+            }
+        }
+
+        // Pagination styling
+        nav.woocommerce-pagination {
+            margin-top: 30px;
+            margin-bottom: 40px;
+            text-align: center;
+
+            ul.page-numbers {
+                border: none !important;
+                display: inline-flex;
+                gap: 6px;
+                padding: 0;
+
+                li {
+                    border: none !important;
+
+                    .page-numbers {
+                        padding: 8px 14px;
+                        border-radius: 6px;
+                        font-weight: 600;
+                        font-size: 13.5px;
+                        border: 1px solid #e5e7eb;
+                        color: #374151;
+
+                        &.current {
+                            background-color: var(--primary-color);
+                            color: #ffffff;
+                            border-color: var(--primary-color);
+                        }
+
+                        &:hover:not(.current) {
+                            background-color: #f9fafb;
+                            border-color: #cbd5e1;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Empty State: When no products are found
+        .agro-empty-shop-state {
+            width: 100%;
+            padding: 30px 0 50px;
+            display: flex;
+            justify-content: center;
+
+            .agro-empty-shop-card {
+                max-width: 640px;
+                width: 100%;
+                margin: 0 auto;
+                text-align: center;
+                padding: 48px 32px;
+                background: #ffffff;
+                border-radius: 18px;
+                border: 1px solid #f0f0f0;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+
+                .empty-icon-wrap {
+                    margin-bottom: 22px;
+                    display: flex;
+                    justify-content: center;
+
+                    .empty-icon-circle {
+                        width: 76px;
+                        height: 76px;
+                        border-radius: 50%;
+                        background: #fee2e2;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+
+                        svg {
+                            width: 36px;
+                            height: 36px;
+                            stroke: var(--primary-color, #c82333);
+                        }
+                    }
+                }
+
+                .empty-state-header {
+                    margin-bottom: 26px;
+
+                    .empty-title {
+                        font-size: clamp(22px, 3.5vw, 26px);
+                        font-weight: 800;
+                        color: var(--text-dark, #1f2937);
+                        line-height: 1.3;
+                        margin: 0 0 10px;
+                        letter-spacing: -0.4px;
+
+                        .search-term {
+                            color: var(--primary-color, #c82333);
+                            font-weight: 800;
+                        }
+                    }
+
+                    .empty-subtitle {
+                        font-size: 14.5px;
+                        line-height: 1.6;
+                        color: #6b7280;
+                        max-width: 480px;
+                        margin: 0 auto;
+                    }
+                }
+
+                .empty-search-box {
+                    max-width: 460px;
+                    margin: 0 auto 28px;
+
+                    .agro-inline-search-form {
+                        margin: 0;
+
+                        .search-input-wrap {
+                            display: flex;
+                            align-items: center;
+                            background-color: #f3f4f6;
+                            border: 1.5px solid transparent;
+                            border-radius: 50px;
+                            padding: 4px 6px 4px 16px;
+                            transition: all 0.2s ease;
+
+                            &:focus-within {
+                                background-color: #ffffff;
+                                border-color: var(--primary-color, #c82333);
+                                box-shadow: 0 0 0 4px rgba(200, 35, 51, 0.12);
+                            }
+
+                            .search-icon {
+                                color: #9ca3af;
+                                display: flex;
+                                align-items: center;
+                                margin-right: 10px;
+                                flex-shrink: 0;
+                            }
+
+                            .search-field {
+                                flex: 1;
+                                height: 42px;
+                                border: none !important;
+                                outline: none !important;
+                                background: transparent !important;
+                                box-shadow: none !important;
+                                font-size: 14px;
+                                color: var(--text-dark, #1f2937);
+                                padding: 0;
+
+                                &::placeholder {
+                                    color: #9ca3af;
+                                }
+                            }
+
+                            .search-submit-btn {
+                                height: 40px;
+                                padding: 0 22px;
+                                border: none !important;
+                                border-radius: 50px !important;
+                                background-color: var(--primary-color, #c82333) !important;
+                                color: #ffffff !important;
+                                font-size: 13.5px !important;
+                                font-weight: 700 !important;
+                                cursor: pointer;
+                                flex-shrink: 0;
+                                transition: all 0.2s ease !important;
+
+                                &:hover {
+                                    background-color: var(--primary-hover, #a81c2a) !important;
+                                    transform: translateY(-1px);
+                                    box-shadow: 0 4px 12px rgba(200, 35, 51, 0.25);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .agro-empty-action-buttons {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 12px;
+                    flex-wrap: wrap;
+
+                    a {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 8px;
+                        padding: 11px 22px;
+                        border-radius: 50px;
+                        font-size: 13.5px;
+                        font-weight: 700;
+                        text-decoration: none !important;
+                        transition: all 0.2s ease;
+
+                        svg {
+                            display: block;
+                            flex-shrink: 0;
+                        }
+                    }
+
+                    .agro-btn-home {
+                        background-color: var(--text-dark, #1f2937);
+                        color: #ffffff !important;
+
+                        &:hover {
+                            background-color: #000000;
+                            transform: translateY(-2px);
+                            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+                        }
+                    }
+
+                    .agro-btn-shop {
+                        background-color: #f3f4f6;
+                        color: var(--text-dark, #1f2937) !important;
+                        border: 1.5px solid #e5e7eb;
+
+                        &:hover {
+                            background-color: #ffffff;
+                            border-color: var(--primary-color, #c82333);
+                            color: var(--primary-color, #c82333) !important;
+                            transform: translateY(-2px);
+                            box-shadow: 0 4px 12px rgba(200, 35, 51, 0.1);
+                        }
+                    }
+                }
+
+                @media (max-width: 767px) {
+                    padding: 32px 18px;
+                    border-radius: 14px;
+
+                    .empty-search-box {
+                        .search-input-wrap {
+                            padding: 3px 4px 3px 12px;
+
+                            .search-field {
+                                font-size: 13px;
+                                height: 38px;
+                            }
+
+                            .search-submit-btn {
+                                height: 36px;
+                                padding: 0 16px;
+                                font-size: 13px;
+                            }
+                        }
+                    }
+
+                    .agro-empty-action-buttons {
+                        flex-direction: column;
+                        width: 100%;
+
+                        a {
+                            width: 100%;
+                            justify-content: center;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    // ==========================================
+    // 4. RESPONSIVE MEDIA QUERIES
+    // ==========================================
+    @media (max-width: 1024px) {
+        .agro-shop-layout {
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .agro-shop-sidebar {
+            position: static;
+            border: 1px solid #f0f0f0;
+            padding: 18px;
+
+            .filter-group {
+                border-bottom: 1px solid #f0f0f0;
+                padding-bottom: 14px;
+                margin-bottom: 14px;
+
+                &:last-of-type {
+                    border-bottom: none;
+                    margin-bottom: 0;
+                    padding-bottom: 0;
+                }
+
+                .filter-heading {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    cursor: pointer;
+                    user-select: none;
+                    margin-bottom: 0;
+                    padding: 6px 0;
+                    font-size: 12px;
+                    font-weight: 800;
+                    color: #374151;
+                    transition: color 0.2s ease;
+
+                    &::after {
+                        content: "";
+                        display: inline-block;
+                        width: 8px;
+                        height: 8px;
+                        border-right: 2px solid #6b7280;
+                        border-bottom: 2px solid #6b7280;
+                        transform: rotate(45deg);
+                        transition: transform 0.25s ease, border-color 0.2s ease;
+                        margin-left: 10px;
+                        flex-shrink: 0;
+                    }
+
+                    &:hover {
+                        color: var(--primary-color);
+
+                        &::after {
+                            border-color: var(--primary-color);
+                        }
+                    }
+                }
+
+                // Accordion collapsible content
+                > *:not(.filter-heading) {
+                    display: none;
+                    padding-top: 10px;
+                }
+
+                &.is-open {
+                    .filter-heading {
+                        color: var(--primary-color);
+                        margin-bottom: 8px;
+
+                        &::after {
+                            transform: rotate(-135deg);
+                            border-color: var(--primary-color);
+                        }
+                    }
+
+                    > *:not(.filter-heading) {
+                        display: block;
+                        animation: filterAccordionFadeIn 0.25s ease;
+                    }
+                }
+            }
+        }
+
+        .agro-shop-main-content ul.products {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 16px !important;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .agro-shop-main-content {
+            .agro-shop-top-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            ul.products {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 12px !important;
+            }
+        }
+    }
+}
