@@ -85,6 +85,14 @@
     align-items: center;
     gap: 12px;
     flex-shrink: 0;
+    width: 100%;
+    max-width: 300px;
+
+    .header-logo {
+        img {
+            max-width: none;
+        }
+    }
 }
 
 .agro-mobile-menu-toggle {

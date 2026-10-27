@@ -483,8 +483,8 @@ ul.products {
                     .button.add_to_cart_button,
                     .button.product_type_simple,
                     .button.product_type_variable {
-                        background-color: #a30021 !important;
-                        color: #ffffff !important;
+                        background-color: var(--primary-color) !important;
+                        color: var(--white-color) !important;
                         font-size: 14px !important;
                         font-weight: 700 !important;
                         padding: 8px 20px !important;
@@ -508,7 +508,7 @@ ul.products {
                         }
 
                         &:hover {
-                            background-color: #85001a !important;
+                            background-color: var(--primary-hover) !important;
                             transform: translateY(-1px);
                         }
 
